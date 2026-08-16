@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
-    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
+
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+
     <application
         android:allowBackup="true"
-        android:label="@string/app_name"
+        android:icon="@android:drawable/ic_menu_agenda"
+        android:label="Stuff Tasks"
+        android:roundIcon="@android:drawable/ic_menu_agenda"
+        android:supportsRtl="true"
         android:theme="@style/Theme.StuffReminder">
+        
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -14,6 +20,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver android:name=".ReminderReceiver" android:exported="false"/>
+
+        <receiver
+            android:name=".ReminderReceiver"
+            android:exported="false" />
     </application>
 </manifest>
