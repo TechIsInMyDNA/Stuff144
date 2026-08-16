@@ -2,33 +2,28 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#121212"
     android:orientation="vertical"
     android:padding="20dp">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Stuff."
-        android:textColor="#FFFFFF"
-        android:textSize="32sp"
+        android:text="Stuff Reminders"
+        android:textSize="26sp"
         android:textStyle="bold"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginBottom="16dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="16dp">
+        android:orientation="horizontal">
 
         <EditText
             android:id="@+id/etTask"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="Type a task..."
-            android:textColorHint="#888888"
-            android:textColor="#FFFFFF"/>
+            android:hint="Enter task..."/>
 
         <Button
             android:id="@+id/btnAddTask"
@@ -40,5 +35,6 @@
     <ListView
         android:id="@+id/lvTasks"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp"/>
 </LinearLayout>

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <color name="black">#FF121212</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="card_bg">#1E1E1E</color>
-    <color name="primary">#4ADE80</color>
-    <color name="text_muted">#AAAAAA</color>
-</resources>

@@ -10,7 +10,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class MainActivity extends Activity {
-    private ArrayList<String> taskList = new ArrayList<>();
+    private ArrayList<String> tasks = new ArrayList<>();
     private ArrayAdapter<String> adapter;
 
     @Override
@@ -22,16 +22,16 @@ public class MainActivity extends Activity {
         Button btnAdd = findViewById(R.id.btnAddTask);
         ListView lvTasks = findViewById(R.id.lvTasks);
 
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, taskList);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, tasks);
         lvTasks.setAdapter(adapter);
 
         btnAdd.setOnClickListener(v -> {
-            String task = etTask.getText().toString().trim();
-            if (!task.isEmpty()) {
-                taskList.add(task);
+            String text = etTask.getText().toString().trim();
+            if (!text.isEmpty()) {
+                tasks.add(text);
                 adapter.notifyDataSetChanged();
                 etTask.setText("");
-                Toast.makeText(MainActivity.this, "Task Added", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Task Added!", Toast.LENGTH_SHORT).show();
             }
         });
     }
