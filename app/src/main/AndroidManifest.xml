@@ -6,7 +6,7 @@
         android:allowBackup="true"
         android:icon="@android:drawable/ic_menu_agenda"
         android:label="Stuff Tasks"
-        android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
+        android:theme="@style/Theme.StuffReminder">
         <activity
             android:name=".MainActivity"
             android:exported="true">
