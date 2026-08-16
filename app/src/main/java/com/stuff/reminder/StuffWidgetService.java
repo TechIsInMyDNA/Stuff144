@@ -89,7 +89,7 @@ class StuffFactory implements RemoteViewsService.RemoteViewsFactory {
 
         Intent fillInIntent = new Intent();
         fillInIntent.putExtra("task_id", item.id);
-        views.setOnClickFillInIntent(R.id.item_row, fillInIntent);
+        Intent editIntent = new Intent(context, MainActivity.class); editIntent.putExtra("task_id", item.id); views.setOnClickFillInIntent(R.id.item_row, editIntent);
 
         return views;
     }
