@@ -10,6 +10,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,32 +34,27 @@ public class MainActivity extends Activity {
 
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setPadding(50, 20, 50, 10);
+        layout.setPadding(40, 20, 40, 10);
 
-        // Header Title Edit
         TextView tvTitleLabel = new TextView(this);
         tvTitleLabel.setText("Widget Header Name:");
-        tvTitleLabel.setTextSize(12);
         layout.addView(tvTitleLabel);
 
         final EditText etHeader = new EditText(this);
         etHeader.setText(TaskStorage.getWidgetTitle(this));
         layout.addView(etHeader);
 
-        // Task input
         TextView tvTaskLabel = new TextView(this);
         tvTaskLabel.setText("New Task:");
         tvTaskLabel.setPadding(0, 20, 0, 0);
-        tvTaskLabel.setTextSize(12);
         layout.addView(tvTaskLabel);
 
         final EditText etTask = new EditText(this);
-        etTask.setHint("e.g. Complete presentation");
+        etTask.setHint("Type your task here...");
         layout.addView(etTask);
 
-        // Date Time display
         final TextView tvDateTime = new TextView(this);
-        tvDateTime.setText("Reminder: No reminder set");
+        tvDateTime.setText("Reminder: None");
         tvDateTime.setPadding(0, 15, 0, 15);
         layout.addView(tvDateTime);
 
@@ -75,7 +71,7 @@ public class MainActivity extends Activity {
                     selectedTime.set(Calendar.HOUR_OF_DAY, hour);
                     selectedTime.set(Calendar.MINUTE, minute);
                     selectedTime.set(Calendar.SECOND, 0);
-                    tvDateTime.setText("Reminder: " + day + "/" + (month + 1) + " at " + String.format("%02d:%02d", hour, minute));
+                    tvDateTime.setText("Reminder: " + day + "/" + (month + 1) + " " + hour + ":" + (minute < 10 ? "0" + minute : minute));
                 }, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), true).show();
 
             }, now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH)).show();
@@ -85,39 +81,43 @@ public class MainActivity extends Activity {
         builder.setView(layout);
 
         builder.setPositiveButton("Save", (dialog, which) -> {
-            // Save Title
             String headerText = etHeader.getText().toString().trim();
             if (!headerText.isEmpty()) {
                 TaskStorage.setWidgetTitle(this, headerText);
             }
 
-            // Save Task if entered
             String taskText = etTask.getText().toString().trim();
             if (!taskText.isEmpty()) {
                 TaskStorage.addTask(this, taskText);
 
-                // Set Alarm
                 if (selectedTime.getTimeInMillis() > System.currentTimeMillis()) {
                     AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                     Intent intent = new Intent(this, AlarmReceiver.class);
                     intent.putExtra("task_title", taskText);
-                    PendingIntent pi = PendingIntent.getBroadcast(this, (int) System.currentTimeMillis(), intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-                    am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, selectedTime.getTimeInMillis(), pi);
+                    int flags = PendingIntent.FLAG_UPDATE_CURRENT;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        flags |= PendingIntent.FLAG_IMMUTABLE;
+                    }
+                    PendingIntent pi = PendingIntent.getBroadcast(this, (int) System.currentTimeMillis(), intent, flags);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, selectedTime.getTimeInMillis(), pi);
+                    } else {
+                        am.setExact(AlarmManager.RTC_WAKEUP, selectedTime.getTimeInMillis(), pi);
+                    }
                 }
             }
 
-            // Refresh Widget Layout & Tasks
+            // Trigger Widget Update
             AppWidgetManager mgr = AppWidgetManager.getInstance(this);
             int[] ids = mgr.getAppWidgetIds(new ComponentName(this, StuffWidgetProvider.class));
-            
+            mgr.notifyAppWidgetViewDataChanged(ids, R.id.lvWidgetTasks);
+
             Intent updateIntent = new Intent(this, StuffWidgetProvider.class);
             updateIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
             updateIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
             sendBroadcast(updateIntent);
 
-            mgr.notifyAppWidgetViewDataChanged(ids, R.id.lvWidgetTasks);
-
-            Toast.makeText(this, "Updated!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show();
             finish();
         });
 
