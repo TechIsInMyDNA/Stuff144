@@ -1,0 +1,7 @@
+com.stuff.reminder.app-pngs-0 /workspaces/Stuff144/app/build/generated/res/pngs/debug
+com.stuff.reminder.app-resValues-1 /workspaces/Stuff144/app/build/generated/res/resValues/debug
+com.stuff.reminder.app-packageDebugResources-2 /workspaces/Stuff144/app/build/intermediates/incremental/debug/packageDebugResources/merged.dir
+com.stuff.reminder.app-packageDebugResources-3 /workspaces/Stuff144/app/build/intermediates/incremental/debug/packageDebugResources/stripped.dir
+com.stuff.reminder.app-merged_res-4 /workspaces/Stuff144/app/build/intermediates/merged_res/debug
+com.stuff.reminder.app-debug-5 /workspaces/Stuff144/app/src/debug/res
+com.stuff.reminder.app-main-6 /workspaces/Stuff144/app/src/main/res

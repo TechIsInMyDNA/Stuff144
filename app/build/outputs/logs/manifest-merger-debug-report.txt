@@ -1,0 +1,87 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml:2:1-24:12
+INJECTED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml:2:1-24:12
+INJECTED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml:2:1-24:12
+INJECTED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml:2:1-24:12
+	package
+		INJECTED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml
+	android:versionName
+		INJECTED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml
+	android:versionCode
+		INJECTED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml:2:11-69
+uses-permission#android.permission.POST_NOTIFICATIONS
+ADDED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml:3:5-76
+	android:name
+		ADDED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml:3:22-74
+uses-permission#android.permission.SCHEDULE_EXACT_ALARM
+ADDED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml:4:5-78
+	android:name
+		ADDED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml:4:22-76
+application
+ADDED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml:5:5-23:19
+INJECTED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml:5:5-23:19
+	android:extractNativeLibs
+		INJECTED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml
+	android:label
+		ADDED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml:7:9-30
+	android:allowBackup
+		ADDED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml:6:9-35
+	android:theme
+		ADDED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml:8:9-71
+activity#com.stuff.reminder.MainActivity
+ADDED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml:9:9-14:20
+	android:exported
+		ADDED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml:9:48-71
+	android:name
+		ADDED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml:9:19-47
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml:10:13-13:29
+action#android.intent.action.MAIN
+ADDED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml:11:17-69
+	android:name
+		ADDED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml:11:25-66
+category#android.intent.category.LAUNCHER
+ADDED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml:12:17-77
+	android:name
+		ADDED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml:12:27-74
+receiver#com.stuff.reminder.StuffWidgetProvider
+ADDED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml:15:9-20:20
+	android:exported
+		ADDED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml:15:55-78
+	android:name
+		ADDED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml:15:19-54
+intent-filter#action:name:android.appwidget.action.APPWIDGET_UPDATE
+ADDED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml:16:13-18:29
+action#android.appwidget.action.APPWIDGET_UPDATE
+ADDED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml:17:17-84
+	android:name
+		ADDED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml:17:25-81
+meta-data#android.appwidget.provider
+ADDED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml:19:13-110
+	android:resource
+		ADDED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml:19:66-107
+	android:name
+		ADDED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml:19:24-65
+service#com.stuff.reminder.StuffWidgetService
+ADDED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml:21:9-112
+	android:permission
+		ADDED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml:21:53-109
+	android:name
+		ADDED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml:21:18-52
+receiver#com.stuff.reminder.AlarmReceiver
+ADDED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml:22:9-76
+	android:exported
+		ADDED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml:22:49-73
+	android:name
+		ADDED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml:22:19-48
+uses-sdk
+INJECTED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml
+INJECTED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /workspaces/Stuff144/app/src/main/AndroidManifest.xml

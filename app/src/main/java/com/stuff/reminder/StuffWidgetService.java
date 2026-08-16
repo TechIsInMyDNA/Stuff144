@@ -7,7 +7,10 @@ import android.text.SpannableString;
 import android.text.style.StrikethroughSpan;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class StuffWidgetService extends RemoteViewsService {
     @Override
@@ -19,6 +22,7 @@ public class StuffWidgetService extends RemoteViewsService {
 class StuffFactory implements RemoteViewsService.RemoteViewsFactory {
     private Context context;
     private List<TaskStorage.Item> taskList;
+    private SimpleDateFormat sdf = new SimpleDateFormat("d MMM, hh:mm a", Locale.getDefault());
 
     public StuffFactory(Context context) {
         this.context = context;
@@ -51,10 +55,36 @@ class StuffFactory implements RemoteViewsService.RemoteViewsFactory {
             SpannableString span = new SpannableString(item.text);
             span.setSpan(new StrikethroughSpan(), 0, span.length(), 0);
             views.setTextViewText(R.id.tvTaskText, span);
-            views.setTextColor(R.id.tvTaskText, Color.parseColor("#3BD16F"));
+            views.setTextColor(R.id.tvTaskText, Color.parseColor("#777777"));
+            views.setTextViewText(R.id.tvCheckbox, "✓");
+            views.setTextColor(R.id.tvCheckbox, Color.parseColor("#00E5FF"));
+            views.setTextViewText(R.id.tvDueDate, "Completed");
+            views.setTextColor(R.id.tvDueDate, Color.parseColor("#555555"));
         } else {
             views.setTextViewText(R.id.tvTaskText, item.text);
-            views.setTextColor(R.id.tvTaskText, Color.parseColor("#EFE68C"));
+            views.setTextColor(R.id.tvTaskText, Color.parseColor("#FFFFFF"));
+            views.setTextViewText(R.id.tvCheckbox, "☐");
+            views.setTextColor(R.id.tvCheckbox, Color.parseColor("#00E5FF"));
+
+            if (item.dueDate > 0) {
+                long now = System.currentTimeMillis();
+                if (now > item.dueDate) {
+                    long diffMinutes = (now - item.dueDate) / (1000 * 60);
+                    String pastText;
+                    if (diffMinutes < 60) {
+                        pastText = "Past due by " + diffMinutes + "m";
+                    } else {
+                        pastText = "Past due by " + (diffMinutes / 60) + "h " + (diffMinutes % 60) + "m";
+                    }
+                    views.setTextViewText(R.id.tvDueDate, pastText);
+                    views.setTextColor(R.id.tvDueDate, Color.parseColor("#FF5252"));
+                } else {
+                    views.setTextViewText(R.id.tvDueDate, sdf.format(new Date(item.dueDate)));
+                    views.setTextColor(R.id.tvDueDate, Color.parseColor("#888888"));
+                }
+            } else {
+                views.setTextViewText(R.id.tvDueDate, "");
+            }
         }
 
         Intent fillInIntent = new Intent();

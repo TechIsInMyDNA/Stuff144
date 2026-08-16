@@ -17,13 +17,17 @@ public class TaskStorage {
         public String text;
         public boolean done;
         public long dueDate;
+
         public Item(int id, String text, boolean done, long dueDate) {
-            this.id = id; this.text = text; this.done = done; this.dueDate = dueDate;
+            this.id = id;
+            this.text = text;
+            this.done = done;
+            this.dueDate = dueDate;
         }
     }
 
     public static String getWidgetTitle(Context context) {
-        return context.getSharedPreferences(PREF, Context.MODE_PRIVATE).getString(KEY_TITLE, "P1 - TASKS");
+        return context.getSharedPreferences(PREF, Context.MODE_PRIVATE).getString(KEY_TITLE, "P1 - IMPORTANT AND URGENT");
     }
 
     public static void setWidgetTitle(Context context, String title) {
@@ -32,29 +36,50 @@ public class TaskStorage {
 
     public static List<Item> getTasks(Context context) {
         Set<String> set = context.getSharedPreferences(PREF, Context.MODE_PRIVATE).getStringSet(KEY_TASKS, new HashSet<String>());
-        List<Item> list = new ArrayList<>();
+        List<Item> list = new ArrayList<Item>();
         for (String s : set) {
             String[] p = s.split(":::", 4);
-            if (p.length >= 4) list.add(new Item(Integer.parseInt(p[0]), p[1], Boolean.parseBoolean(p[2]), Long.parseLong(p[3])));
+            if (p.length >= 4) {
+                list.add(new Item(Integer.parseInt(p[0]), p[1], Boolean.parseBoolean(p[2]), Long.parseLong(p[3])));
+            }
         }
         return list;
     }
 
     public static void saveTasks(Context context, List<Item> list) {
-        Set<String> set = new HashSet<>();
-        for (Item i : list) set.add(i.id + ":::" + i.text + ":::" + i.done + ":::" + i.dueDate);
+        Set<String> set = new HashSet<String>();
+        for (Item i : list) {
+            set.add(i.id + ":::" + i.text + ":::" + i.done + ":::" + i.dueDate);
+        }
         context.getSharedPreferences(PREF, Context.MODE_PRIVATE).edit().putStringSet(KEY_TASKS, set).apply();
     }
 
     public static void addTask(Context context, String text, long dueDate) {
         List<Item> list = getTasks(context);
-        list.add(new Item((int)(System.currentTimeMillis()%100000), text, false, dueDate));
+        list.add(new Item((int) (System.currentTimeMillis() % 1000000), text, false, dueDate));
         saveTasks(context, list);
     }
-    
+
+    public static void updateTask(Context context, int id, String text, long dueDate) {
+        List<Item> list = getTasks(context);
+        for (Item i : list) {
+            if (i.id == id) {
+                i.text = text;
+                i.dueDate = dueDate;
+                break;
+            }
+        }
+        saveTasks(context, list);
+    }
+
     public static void toggleTask(Context context, int id) {
         List<Item> list = getTasks(context);
-        for (Item i : list) if (i.id == id) i.done = !i.done;
+        for (Item i : list) {
+            if (i.id == id) {
+                i.done = !i.done;
+                break;
+            }
+        }
         saveTasks(context, list);
     }
 }

@@ -1,0 +1,25 @@
+R_DEF: Internal format may change without notice
+local
+color accent_cyan
+color bg_widget
+color item_bg
+color past_due_red
+color task_gray
+color task_white
+drawable task_bg
+drawable widget_background
+id btnAddTask
+id etTask
+id item_row
+id lvTasks
+id lvWidgetTasks
+id tvCheckbox
+id tvDueDate
+id tvTaskText
+id tvWidgetHeader
+id widget_container
+layout activity_main
+layout widget_layout
+layout widget_task_item
+string app_name
+xml stuff_widget_info

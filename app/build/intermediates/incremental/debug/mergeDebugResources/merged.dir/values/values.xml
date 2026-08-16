@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="accent_cyan">#00E5FF</color>
+    <color name="bg_widget">#111111</color>
+    <color name="item_bg">#1A1A1A</color>
+    <color name="past_due_red">#FF5252</color>
+    <color name="task_gray">#777777</color>
+    <color name="task_white">#FFFFFF</color>
+    <string name="app_name">Stuff</string>
+</resources>
