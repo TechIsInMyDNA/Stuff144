@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Set;
 
 public class TaskStorage {
-    private static final String PREF = "stuff_tasks_pref";
-    private static final String KEY_TASKS = "tasks_list";
-    private static final String KEY_TITLE = "widget_title";
+    private static final String PREF = "stuff_pref";
+    private static final String KEY_TASKS = "tasks";
+    private static final String KEY_TITLE = "title";
 
     public static class Item {
         public int id;
@@ -24,18 +24,15 @@ public class TaskStorage {
     }
 
     public static String getWidgetTitle(Context context) {
-        SharedPreferences sp = context.getSharedPreferences(PREF, Context.MODE_PRIVATE);
-        return sp.getString(KEY_TITLE, "P1 - IMPORTANT AND URGENT");
+        return context.getSharedPreferences(PREF, Context.MODE_PRIVATE).getString(KEY_TITLE, "P1 - IMPORTANT AND URGENT");
     }
 
     public static void setWidgetTitle(Context context, String title) {
-        SharedPreferences sp = context.getSharedPreferences(PREF, Context.MODE_PRIVATE);
-        sp.edit().putString(KEY_TITLE, title).apply();
+        context.getSharedPreferences(PREF, Context.MODE_PRIVATE).edit().putString(KEY_TITLE, title).apply();
     }
 
     public static List<Item> getTasks(Context context) {
-        SharedPreferences sp = context.getSharedPreferences(PREF, Context.MODE_PRIVATE);
-        Set<String> set = sp.getStringSet(KEY_TASKS, new HashSet<>());
+        Set<String> set = context.getSharedPreferences(PREF, Context.MODE_PRIVATE).getStringSet(KEY_TASKS, new HashSet<String>());
         List<Item> list = new ArrayList<>();
         for (String s : set) {
             String[] parts = s.split(":::", 3);
@@ -47,17 +44,16 @@ public class TaskStorage {
     }
 
     public static void saveTasks(Context context, List<Item> list) {
-        SharedPreferences sp = context.getSharedPreferences(PREF, Context.MODE_PRIVATE);
         Set<String> set = new HashSet<>();
         for (Item item : list) {
             set.add(item.id + ":::" + item.text + ":::" + item.done);
         }
-        sp.edit().putStringSet(KEY_TASKS, set).apply();
+        context.getSharedPreferences(PREF, Context.MODE_PRIVATE).edit().putStringSet(KEY_TASKS, set).apply();
     }
 
     public static void addTask(Context context, String text) {
         List<Item> list = getTasks(context);
-        list.add(new Item((int) System.currentTimeMillis(), text, false));
+        list.add(new Item((int) (System.currentTimeMillis() % 10000000), text, false));
         saveTasks(context, list);
     }
 

@@ -1,0 +1,6 @@
+<resources>
+    <color name="widget_bg">#E6151515</color>
+    <color name="cyan_title">#33E1D4</color>
+    <color name="task_yellow">#EFE68C</color>
+    <color name="task_green">#3BD16F</color>
+</resources>

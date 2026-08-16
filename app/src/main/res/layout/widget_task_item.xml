@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="• "
-        android:textColor="#3BD16F"
+        android:textColor="@color/task_green"
         android:textSize="16sp"
         android:textStyle="bold"/>
 
@@ -19,6 +19,6 @@
         android:id="@+id/tvTaskText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#EFE68C"
+        android:textColor="@color/task_yellow"
         android:textSize="15sp"/>
 </LinearLayout>

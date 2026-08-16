@@ -7,6 +7,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.widget.RemoteViews;
 
 public class StuffWidgetProvider extends AppWidgetProvider {
@@ -16,26 +17,24 @@ public class StuffWidgetProvider extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         for (int appWidgetId : appWidgetIds) {
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
+            views.setTextViewText(R.id.tvWidgetHeader, TaskStorage.getWidgetTitle(context));
 
-            // Dynamic header text from storage
-            String title = TaskStorage.getWidgetTitle(context);
-            views.setTextViewText(R.id.tvWidgetHeader, title);
-
-            // Click header to open Add Task & Edit Title dialog
             Intent addIntent = new Intent(context, MainActivity.class);
-            PendingIntent addPi = PendingIntent.getActivity(context, 0, addIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+            int flags = PendingIntent.FLAG_UPDATE_CURRENT;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) flags |= PendingIntent.FLAG_IMMUTABLE;
+            PendingIntent addPi = PendingIntent.getActivity(context, 0, addIntent, flags);
             views.setOnClickPendingIntent(R.id.tvWidgetHeader, addPi);
 
-            // RemoteAdapter for ListView
             Intent svcIntent = new Intent(context, StuffWidgetService.class);
             svcIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
             svcIntent.setData(Uri.parse(svcIntent.toUri(Intent.URI_INTENT_SCHEME)));
             views.setRemoteAdapter(R.id.lvWidgetTasks, svcIntent);
 
-            // Template click intent for item
             Intent clickIntent = new Intent(context, StuffWidgetProvider.class);
             clickIntent.setAction(ACTION_TASK_CLICK);
-            PendingIntent clickPi = PendingIntent.getBroadcast(context, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
+            int clickFlags = PendingIntent.FLAG_UPDATE_CURRENT;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) clickFlags |= PendingIntent.FLAG_MUTABLE;
+            PendingIntent clickPi = PendingIntent.getBroadcast(context, 0, clickIntent, clickFlags);
             views.setPendingIntentTemplate(R.id.lvWidgetTasks, clickPi);
 
             appWidgetManager.updateAppWidget(appWidgetId, views);
