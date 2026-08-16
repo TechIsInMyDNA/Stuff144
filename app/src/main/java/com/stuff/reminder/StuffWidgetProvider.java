@@ -11,14 +11,13 @@ import android.os.Build;
 import android.widget.RemoteViews;
 
 public class StuffWidgetProvider extends AppWidgetProvider {
-    public static final String ACTION_TASK_CLICK = "com.stuff.reminder.ACTION_TASK_CLICK";
-
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         for (int appWidgetId : appWidgetIds) {
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
             views.setTextViewText(R.id.tvWidgetHeader, TaskStorage.getWidgetTitle(context));
 
+            // Header click opens "Add Task"
             Intent addIntent = new Intent(context, MainActivity.class);
             int flags = PendingIntent.FLAG_UPDATE_CURRENT;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) flags |= PendingIntent.FLAG_IMMUTABLE;
@@ -30,29 +29,19 @@ public class StuffWidgetProvider extends AppWidgetProvider {
             svcIntent.setData(Uri.parse(svcIntent.toUri(Intent.URI_INTENT_SCHEME)));
             views.setRemoteAdapter(R.id.lvWidgetTasks, svcIntent);
 
-            Intent clickIntent = new Intent(context, StuffWidgetProvider.class);
-            clickIntent.setAction(ACTION_TASK_CLICK);
+            // Item click opens "Edit Task"
+            Intent editTemplate = new Intent(context, MainActivity.class);
             int clickFlags = PendingIntent.FLAG_UPDATE_CURRENT;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) clickFlags |= PendingIntent.FLAG_MUTABLE;
-            PendingIntent clickPi = PendingIntent.getBroadcast(context, 0, clickIntent, clickFlags);
-            views.setPendingIntentTemplate(R.id.lvWidgetTasks, clickPi);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.MUTABLE_FLAGS_ALLOWED) {
+                clickFlags |= PendingIntent.FLAG_MUTABLE;
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                clickFlags |= PendingIntent.FLAG_MUTABLE;
+            }
+            PendingIntent editPi = PendingIntent.getActivity(context, 1, editTemplate, clickFlags);
+            views.setPendingIntentTemplate(R.id.lvWidgetTasks, editPi);
 
             appWidgetManager.updateAppWidget(appWidgetId, views);
         }
         super.onUpdate(context, appWidgetManager, appWidgetIds);
-    }
-
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        super.onReceive(context, intent);
-        if (ACTION_TASK_CLICK.equals(intent.getAction())) {
-            int taskId = intent.getIntExtra("task_id", -1);
-            if (taskId != -1) {
-                TaskStorage.toggleTask(context, taskId);
-                AppWidgetManager mgr = AppWidgetManager.getInstance(context);
-                int[] ids = mgr.getAppWidgetIds(new ComponentName(context, StuffWidgetProvider.class));
-                mgr.notifyAppWidgetViewDataChanged(ids, R.id.lvWidgetTasks);
-            }
-        }
     }
 }

@@ -58,7 +58,7 @@ class StuffFactory implements RemoteViewsService.RemoteViewsFactory {
             views.setTextColor(R.id.tvTaskText, Color.parseColor("#777777"));
             views.setTextViewText(R.id.tvCheckbox, "✓");
             views.setTextColor(R.id.tvCheckbox, Color.parseColor("#00E5FF"));
-            views.setTextViewText(R.id.tvDueDate, "Completed");
+            views.setTextViewText(R.id.tvDueDate, "Done");
             views.setTextColor(R.id.tvDueDate, Color.parseColor("#555555"));
         } else {
             views.setTextViewText(R.id.tvTaskText, item.text);
@@ -69,14 +69,9 @@ class StuffFactory implements RemoteViewsService.RemoteViewsFactory {
             if (item.dueDate > 0) {
                 long now = System.currentTimeMillis();
                 if (now > item.dueDate) {
-                    long diffMinutes = (now - item.dueDate) / (1000 * 60);
-                    String pastText;
-                    if (diffMinutes < 60) {
-                        pastText = "Past due by " + diffMinutes + "m";
-                    } else {
-                        pastText = "Past due by " + (diffMinutes / 60) + "h " + (diffMinutes % 60) + "m";
-                    }
-                    views.setTextViewText(R.id.tvDueDate, pastText);
+                    long diffMin = (now - item.dueDate) / (1000 * 60);
+                    String past = (diffMin < 60) ? "Past due by " + diffMin + "m" : "Past due by " + (diffMin / 60) + "h " + (diffMin % 60) + "m";
+                    views.setTextViewText(R.id.tvDueDate, past);
                     views.setTextColor(R.id.tvDueDate, Color.parseColor("#FF5252"));
                 } else {
                     views.setTextViewText(R.id.tvDueDate, sdf.format(new Date(item.dueDate)));
@@ -89,7 +84,7 @@ class StuffFactory implements RemoteViewsService.RemoteViewsFactory {
 
         Intent fillInIntent = new Intent();
         fillInIntent.putExtra("task_id", item.id);
-        Intent editIntent = new Intent(context, MainActivity.class); editIntent.putExtra("task_id", item.id); views.setOnClickFillInIntent(R.id.item_row, editIntent);
+        views.setOnClickFillInIntent(R.id.item_row, fillInIntent);
 
         return views;
     }
