@@ -2,24 +2,24 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/widget_background"
+    android:background="#0D0D0D"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="12dp">
 
     <TextView
         android:id="@+id/tvWidgetHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="P1 - IMPORTANT AND URGENT"
-        android:textColor="@color/cyan_title"
-        android:textSize="18sp"
+        android:text="P1 - TASKS"
+        android:textColor="#00E5FF"
+        android:textSize="14sp"
         android:textStyle="bold"
-        android:paddingBottom="12dp"/>
+        android:paddingBottom="8dp"/>
 
     <ListView
         android:id="@+id/lvWidgetTasks"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:divider="@null"/>
+        android:layout_height="match_parent"
+        android:divider="@null"
+        android:dividerHeight="0dp"/>
 </LinearLayout>
