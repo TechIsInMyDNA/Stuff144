@@ -2,40 +2,48 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     android:orientation="vertical"
-    android:background="#121212"
-    android:padding="20dp">
+    android:padding="16dp">
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="STUFF TASKS"
-        android:textColor="#4ADE80"
-        android:textSize="24sp"
+        android:text="Stuff."
+        android:textColor="@color/white"
+        android:textSize="32sp"
         android:textStyle="bold"
-        android:layout_marginBottom="20dp"/>
-    <EditText
-        android:id="@+id/etTask"
+        android:layout_marginBottom="16dp"/>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Task likhein..."
-        android:textColorHint="#777777"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="#4ADE80"
-        android:textSize="18sp"/>
-    <Button
-        android:id="@+id/btnPickTime"
+        android:orientation="horizontal"
+        android:layout_marginBottom="16dp">
+
+        <EditText
+            android:id="@+id/etTask"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Add a task..."
+            android:textColorHint="@color/text_muted"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/primary"/>
+
+        <Button
+            android:id="@+id/btnAddTask"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add"
+            android:backgroundTint="@color/primary"
+            android:textColor="@color/black"/>
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/lvTasks"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="#1F2937"
-        android:textColor="#FFFFFF"
-        android:text="Select Date &amp; Time"/>
-    <Button
-        android:id="@+id/btnSave"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:backgroundTint="#4ADE80"
-        android:textColor="#000000"
-        android:text="Save &amp; Remind Me"/>
+        android:layout_height="match_parent"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="8dp"/>
 </LinearLayout>
