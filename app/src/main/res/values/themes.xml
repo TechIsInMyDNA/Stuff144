@@ -1,6 +1,5 @@
 <resources>
-    <style name="Theme.StuffReminder" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/primary</item>
+    <style name="Theme.StuffReminder" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@color/black</item>
     </style>
 </resources>

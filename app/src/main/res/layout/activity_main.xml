@@ -2,18 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="#121212"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="20dp">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Stuff."
-        android:textColor="@color/white"
+        android:textColor="#FFFFFF"
         android:textSize="32sp"
         android:textStyle="bold"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginBottom="20dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,24 +26,19 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="Add a task..."
-            android:textColorHint="@color/text_muted"
-            android:textColor="@color/white"
-            android:backgroundTint="@color/primary"/>
+            android:hint="Type a task..."
+            android:textColorHint="#888888"
+            android:textColor="#FFFFFF"/>
 
         <Button
             android:id="@+id/btnAddTask"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add"
-            android:backgroundTint="@color/primary"
-            android:textColor="@color/black"/>
+            android:text="Add"/>
     </LinearLayout>
 
     <ListView
         android:id="@+id/lvTasks"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="8dp"/>
+        android:layout_height="match_parent"/>
 </LinearLayout>
