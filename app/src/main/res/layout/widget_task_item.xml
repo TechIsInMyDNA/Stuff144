@@ -3,22 +3,18 @@
     android:id="@+id/item_row"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    android:background="@drawable/task_bg"
     android:orientation="horizontal"
-    android:paddingTop="6dp"
-    android:paddingBottom="6dp">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="• "
-        android:textColor="@color/task_green"
-        android:textSize="16sp"
-        android:textStyle="bold"/>
+    android:gravity="center_vertical">
 
     <TextView
         android:id="@+id/tvTaskText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/task_yellow"
-        android:textSize="15sp"/>
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:fontFamily="sans-serif-medium"
+        android:padding="8dp"/>
 </LinearLayout>

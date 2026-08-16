@@ -7,7 +7,9 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioAttributes;
 import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 
 public class AlarmReceiver extends BroadcastReceiver {
@@ -15,36 +17,44 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String taskTitle = intent.getStringExtra("task_title");
         NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        String channelId = "stuff_channel_high";
+        String channelId = "stuff_pro_channel";
+
+        // Forced Sound configuration
+        Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && nm != null) {
-            NotificationChannel ch = new NotificationChannel(channelId, "Task Alerts", NotificationManager.IMPORTANCE_HIGH);
+            NotificationChannel ch = new NotificationChannel(channelId, "Pro Task Alerts", NotificationManager.IMPORTANCE_HIGH);
+            ch.setDescription("High priority task reminders");
+            ch.enableLights(true);
             ch.enableVibration(true);
+            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .setUsage(AudioAttributes.USAGE_ALARM)
+                    .build();
+            ch.setSound(soundUri, audioAttributes);
             nm.createNotificationChannel(ch);
         }
 
         Intent openApp = new Intent(context, MainActivity.class);
-        int flags = PendingIntent.FLAG_UPDATE_CURRENT;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            flags |= PendingIntent.FLAG_IMMUTABLE;
-        }
-        PendingIntent pi = PendingIntent.getActivity(context, 0, openApp, flags);
+        PendingIntent pi = PendingIntent.getActivity(context, 0, openApp, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         Notification.Builder builder = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) 
                 ? new Notification.Builder(context, channelId) 
                 : new Notification.Builder(context);
 
         Notification n = builder
-                .setContentTitle("Stuff (P1 Reminder)")
-                .setContentText(taskTitle != null ? taskTitle : "Task Reminder!")
-                .setSmallIcon(android.R.drawable.ic_popup_reminder)
-                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                .setContentTitle("Stuff Reminder")
+                .setContentText(taskTitle != null ? taskTitle : "Time to finish your task!")
+                .setSmallIcon(android.R.drawable.ic_lock_idle_alarm)
+                .setSound(soundUri)
+                .setPriority(Notification.PRIORITY_HIGH)
                 .setContentIntent(pi)
                 .setAutoCancel(true)
+                .setDefaults(Notification.DEFAULT_ALL)
                 .build();
 
         if (nm != null) {
-            nm.notify((int) System.currentTimeMillis(), n);
+            nm.notify(1001, n);
         }
     }
 }
