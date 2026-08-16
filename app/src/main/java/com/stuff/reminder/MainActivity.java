@@ -1,16 +1,16 @@
 package com.stuff.reminder;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
-    private ArrayList<String> tasks = new ArrayList<>();
+public class MainActivity extends Activity {
+    private ArrayList<String> taskList = new ArrayList<>();
     private ArrayAdapter<String> adapter;
 
     @Override
@@ -22,16 +22,16 @@ public class MainActivity extends AppCompatActivity {
         Button btnAdd = findViewById(R.id.btnAddTask);
         ListView lvTasks = findViewById(R.id.lvTasks);
 
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, tasks);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, taskList);
         lvTasks.setAdapter(adapter);
 
         btnAdd.setOnClickListener(v -> {
-            String text = etTask.getText().toString().trim();
-            if (!text.isEmpty()) {
-                tasks.add(text);
+            String task = etTask.getText().toString().trim();
+            if (!task.isEmpty()) {
+                taskList.add(task);
                 adapter.notifyDataSetChanged();
                 etTask.setText("");
-                Toast.makeText(this, "Task added!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Task Added", Toast.LENGTH_SHORT).show();
             }
         });
     }
