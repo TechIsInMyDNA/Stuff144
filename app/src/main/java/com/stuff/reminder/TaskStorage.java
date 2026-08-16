@@ -1,7 +1,11 @@
 package com.stuff.reminder;
 
 import android.content.Context;
-import java.util.*;
+import android.content.SharedPreferences;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class TaskStorage {
     private static final String PREF = "stuff_pref";
@@ -27,7 +31,7 @@ public class TaskStorage {
     }
 
     public static List<Item> getTasks(Context context) {
-        Set<String> set = context.getSharedPreferences(PREF, Context.MODE_PRIVATE).getStringSet(KEY_TASKS, new HashSet<>());
+        Set<String> set = context.getSharedPreferences(PREF, Context.MODE_PRIVATE).getStringSet(KEY_TASKS, new HashSet<String>());
         List<Item> list = new ArrayList<>();
         for (String s : set) {
             String[] p = s.split(":::", 4);
@@ -48,12 +52,6 @@ public class TaskStorage {
         saveTasks(context, list);
     }
     
-    public static void updateTask(Context context, int id, String text, boolean done) {
-        List<Item> list = getTasks(context);
-        for(Item i : list) if(i.id == id) { i.text = text; i.done = done; }
-        saveTasks(context, list);
-    }
-
     public static void toggleTask(Context context, int id) {
         List<Item> list = getTasks(context);
         for (Item i : list) if (i.id == id) i.done = !i.done;
