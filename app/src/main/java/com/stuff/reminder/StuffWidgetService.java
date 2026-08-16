@@ -3,6 +3,7 @@ package com.stuff.reminder;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.StrikethroughSpan;
 import android.widget.RemoteViews;
@@ -55,11 +56,11 @@ class StuffFactory implements RemoteViewsService.RemoteViewsFactory {
             SpannableString span = new SpannableString(item.text);
             span.setSpan(new StrikethroughSpan(), 0, span.length(), 0);
             views.setTextViewText(R.id.tvTaskText, span);
-            views.setTextColor(R.id.tvTaskText, Color.parseColor("#777777"));
+            views.setTextColor(R.id.tvTaskText, Color.parseColor("#666666"));
             views.setTextViewText(R.id.tvCheckbox, "✓");
             views.setTextColor(R.id.tvCheckbox, Color.parseColor("#00E5FF"));
-            views.setTextViewText(R.id.tvDueDate, "Done");
-            views.setTextColor(R.id.tvDueDate, Color.parseColor("#555555"));
+            views.setTextViewText(R.id.tvDueDate, "Completed");
+            views.setTextColor(R.id.tvDueDate, Color.parseColor("#444444"));
         } else {
             views.setTextViewText(R.id.tvTaskText, item.text);
             views.setTextColor(R.id.tvTaskText, Color.parseColor("#FFFFFF"));
@@ -82,6 +83,7 @@ class StuffFactory implements RemoteViewsService.RemoteViewsFactory {
             }
         }
 
+        // Fill-in Intent to open edit dialog with exact ID
         Intent fillInIntent = new Intent();
         fillInIntent.putExtra("task_id", item.id);
         views.setOnClickFillInIntent(R.id.item_row, fillInIntent);

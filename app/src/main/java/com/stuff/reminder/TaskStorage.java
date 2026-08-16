@@ -72,6 +72,15 @@ public class TaskStorage {
         saveTasks(context, list);
     }
 
+    public static void deleteTask(Context context, int id) {
+        List<Item> list = getTasks(context);
+        List<Item> updated = new ArrayList<>();
+        for (Item i : list) {
+            if (i.id != id) updated.add(i);
+        }
+        saveTasks(context, updated);
+    }
+
     public static void toggleTask(Context context, int id) {
         List<Item> list = getTasks(context);
         for (Item i : list) {

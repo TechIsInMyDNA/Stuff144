@@ -20,11 +20,15 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class MainActivity extends Activity {
     private int editId = -1;
     private long selectedTime = 0;
+    private SimpleDateFormat sdf = new SimpleDateFormat("d MMM, hh:mm a", Locale.getDefault());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,17 +43,22 @@ public class MainActivity extends Activity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             if (am != null && !am.canScheduleExactAlarms()) {
-                startActivity(new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM));
+                try {
+                    startActivity(new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM));
+                } catch (Exception ignored) {}
             }
         }
 
-        editId = getIntent().getIntExtra("task_id", -1);
-        showInputDialog();
+        if (getIntent() != null) {
+            editId = getIntent().getIntExtra("task_id", -1);
+        }
+
+        showTaskDialog();
     }
 
-    private void showInputDialog() {
+    private void showTaskDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(editId == -1 ? "Stuff - Add Task" : "Stuff - Edit Task");
+        builder.setTitle(editId == -1 ? "Add Task" : "Edit / Manage Task");
 
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
@@ -70,7 +79,7 @@ public class MainActivity extends Activity {
         layout.addView(tvT);
 
         final EditText etTask = new EditText(this);
-        etTask.setHint("Type your task here...");
+        etTask.setHint("What needs to be done?");
         layout.addView(etTask);
 
         if (editId != -1) {
@@ -84,12 +93,12 @@ public class MainActivity extends Activity {
         }
 
         final TextView tvDateInfo = new TextView(this);
-        tvDateInfo.setText(selectedTime > 0 ? "Reminder Scheduled" : "No reminder set");
-        tvDateInfo.setPadding(0, 10, 0, 10);
+        tvDateInfo.setText(selectedTime > 0 ? "Reminder: " + sdf.format(new Date(selectedTime)) : "No reminder set");
+        tvDateInfo.setPadding(0, 15, 0, 10);
         layout.addView(tvDateInfo);
 
         Button btnDate = new Button(this);
-        btnDate.setText("Set Reminder Time");
+        btnDate.setText("Set / Change Reminder Time");
         btnDate.setOnClickListener(v -> {
             Calendar c = Calendar.getInstance();
             new DatePickerDialog(this, (view, y, m, d) -> {
@@ -101,11 +110,33 @@ public class MainActivity extends Activity {
                     c.set(Calendar.MINUTE, min);
                     c.set(Calendar.SECOND, 0);
                     selectedTime = c.getTimeInMillis();
-                    tvDateInfo.setText("Reminder: " + d + "/" + (m + 1) + " at " + String.format("%02d:%02d", h, min));
+                    tvDateInfo.setText("Reminder: " + sdf.format(new Date(selectedTime)));
                 }, c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE), true).show();
             }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show();
         });
         layout.addView(btnDate);
+
+        if (editId != -1) {
+            Button btnToggle = new Button(this);
+            btnToggle.setText("Toggle Done / UnDone (Checkbox)");
+            btnToggle.setOnClickListener(v -> {
+                TaskStorage.toggleTask(this, editId);
+                updateAllWidgets();
+                Toast.makeText(this, "Status updated!", Toast.LENGTH_SHORT).show();
+                finish();
+            });
+            layout.addView(btnToggle);
+
+            Button btnDelete = new Button(this);
+            btnDelete.setText("Delete Task");
+            btnDelete.setOnClickListener(v -> {
+                TaskStorage.deleteTask(this, editId);
+                updateAllWidgets();
+                Toast.makeText(this, "Task Deleted!", Toast.LENGTH_SHORT).show();
+                finish();
+            });
+            layout.addView(btnDelete);
+        }
 
         builder.setView(layout);
         builder.setPositiveButton("Save", (d, w) -> {
@@ -141,15 +172,7 @@ public class MainActivity extends Activity {
                 }
             }
 
-            AppWidgetManager mgr = AppWidgetManager.getInstance(this);
-            int[] ids = mgr.getAppWidgetIds(new ComponentName(this, StuffWidgetProvider.class));
-            mgr.notifyAppWidgetViewDataChanged(ids, R.id.lvWidgetTasks);
-
-            Intent updateIntent = new Intent(this, StuffWidgetProvider.class);
-            updateIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-            updateIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
-            sendBroadcast(updateIntent);
-
+            updateAllWidgets();
             Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show();
             finish();
         });
@@ -157,5 +180,16 @@ public class MainActivity extends Activity {
         builder.setNegativeButton("Cancel", (d, w) -> finish());
         builder.setOnCancelListener(d -> finish());
         builder.show();
+    }
+
+    private void updateAllWidgets() {
+        AppWidgetManager mgr = AppWidgetManager.getInstance(this);
+        int[] ids = mgr.getAppWidgetIds(new ComponentName(this, StuffWidgetProvider.class));
+        mgr.notifyAppWidgetViewDataChanged(ids, R.id.lvWidgetTasks);
+
+        Intent updateIntent = new Intent(this, StuffWidgetProvider.class);
+        updateIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        updateIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+        sendBroadcast(updateIntent);
     }
 }

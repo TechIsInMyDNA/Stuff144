@@ -19,24 +19,26 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String title = intent.getStringExtra("task_title");
         NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        String channelId = "stuff_loud_alert_v1";
+        String channelId = "stuff_loud_channel_v8";
 
-        Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        if (soundUri == null) soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        if (soundUri == null) soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
+        // Immediate Direct Play fallback
         try {
             Ringtone r = RingtoneManager.getRingtone(context, soundUri);
             if (r != null) r.play();
             Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-            if (v != null) v.vibrate(400);
+            if (v != null) v.vibrate(new long[]{0, 400, 200, 400}, -1);
         } catch (Exception ignored) {}
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && nm != null) {
-            NotificationChannel ch = new NotificationChannel(channelId, "Task Reminders", NotificationManager.IMPORTANCE_HIGH);
+            NotificationChannel ch = new NotificationChannel(channelId, "Task Alarm Reminders", NotificationManager.IMPORTANCE_HIGH);
             ch.enableVibration(true);
+            ch.setVibrationPattern(new long[]{0, 400, 200, 400});
             AudioAttributes audioAttributes = new AudioAttributes.Builder()
                     .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                    .setUsage(AudioAttributes.USAGE_ALARM)
                     .build();
             ch.setSound(soundUri, audioAttributes);
             nm.createNotificationChannel(ch);
@@ -52,8 +54,8 @@ public class AlarmReceiver extends BroadcastReceiver {
                 : new Notification.Builder(context);
 
         Notification n = builder
-                .setContentTitle("Stuff Task Reminder")
-                .setContentText(title != null ? title : "Task is due!")
+                .setContentTitle("P1 Urgent: " + (title != null ? title : "Task Reminder"))
+                .setContentText("Tap to review or manage this task.")
                 .setSmallIcon(android.R.drawable.stat_notify_chat)
                 .setContentIntent(pi)
                 .setPriority(Notification.PRIORITY_MAX)

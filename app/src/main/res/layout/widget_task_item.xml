@@ -8,8 +8,8 @@
     android:gravity="center_vertical"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
-    android:paddingTop="6dp"
-    android:paddingBottom="6dp">
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp">
 
     <TextView
         android:id="@+id/tvCheckbox"
@@ -17,8 +17,8 @@
         android:layout_height="wrap_content"
         android:text="☐"
         android:textColor="@color/accent_cyan"
-        android:textSize="14sp"
-        android:paddingRight="8dp"/>
+        android:textSize="15sp"
+        android:paddingRight="10dp"/>
 
     <LinearLayout
         android:layout_width="0dp"
