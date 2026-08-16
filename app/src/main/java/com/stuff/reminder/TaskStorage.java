@@ -40,7 +40,9 @@ public class TaskStorage {
         for (String s : set) {
             String[] p = s.split(":::", 4);
             if (p.length >= 4) {
-                list.add(new Item(Integer.parseInt(p[0]), p[1], Boolean.parseBoolean(p[2]), Long.parseLong(p[3])));
+                try {
+                    list.add(new Item(Integer.parseInt(p[0]), p[1], Boolean.parseBoolean(p[2]), Long.parseLong(p[3])));
+                } catch (Exception ignored) {}
             }
         }
         return list;
